@@ -7,6 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('vendor/laravel-admin/AdminLTE/dist/css/AdminLTE.min.css')}}">
 </head>
 
 <body class="hold-transition login-page">
