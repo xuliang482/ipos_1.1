@@ -15,7 +15,7 @@ return [
 
     'id' => 'ID',
     'gender' => '性别',
-    'name' => '名称',
+    'name' => '客户名称',
     'email' => '电子邮箱',
     'phone_number' => '电话',
     'avatar' => '头像',
@@ -26,17 +26,28 @@ return [
     'district' => '区',
     'comment' => '备注',
     'company_name' => '公司名称',
-   
+    'account' => '公司名称',
+
+
     'operation' => '操作',
+    'reset'=> '重置',
     'submit'=> '提交',
     'create'=> '新客户',
     'export'=> '导出',
     'edit'	=> '编辑',
     'delete'=> '删除',
-    
+
+
+    'title' => '客户信息',
+    'back'=> '返回',
+    'list'=> '一览',
+
     'message_successful_label'=> '成功',
     'message_successful_create'=> '您已成功添加客户',
     'message_successful_delete'=> '您已成功删除客户',
     'message_successful_edit'=> '您已成功更新客户',
+
+    'validation_name_required' => '客户名称是必须输入项',
+    'validation_phone_number_required' => '电话号码是必须输入项',
     
 ];

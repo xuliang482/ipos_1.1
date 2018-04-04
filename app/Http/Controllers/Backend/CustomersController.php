@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
+
 
 class CustomersController extends Controller
 {
@@ -47,10 +49,10 @@ class CustomersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CustomerRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
         // store
         $customers = new Customer;
