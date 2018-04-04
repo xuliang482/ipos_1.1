@@ -19,13 +19,13 @@
 						{!! Form::text('name', Input::old('name'), array('class' => 'form-control')) !!}
 						</div>
 					</div>
-
 					<div class="form-group">
-						{!! Form::label('email', trans('customer.email'),array('class' => 'col-sm-2 control-label')) !!}
+						{!! Form::label('gender', trans('customer.gender') .' *', array('class' => 'col-sm-2 control-label')) !!}
 						<div class="col-sm-8">
-						{!! Form::text('email', Input::old('email'), array('class' => 'form-control')) !!}
+						{!! Form::text('gender', Input::old('gender'), array('class' => 'form-control')) !!}
 						</div>
 					</div>
+
 					<div class="form-group">
 						{!! Form::label('phone_number', trans('customer.phone_number'),array('class' => 'col-sm-2 control-label')) !!}
 						<div class="col-sm-8">
@@ -33,7 +33,13 @@
 						</div>
 					</div>
 					<div class="form-group">
-						{!! Form::label('avatar', trans('customer.choose_avatar'),array('class' => 'col-sm-2 control-label')) !!}
+						{!! Form::label('email', trans('customer.email'),array('class' => 'col-sm-2 control-label')) !!}
+						<div class="col-sm-8">
+						{!! Form::text('email', Input::old('email'), array('class' => 'form-control')) !!}
+						</div>
+					</div>
+					<div class="form-group">
+						{!! Form::label('avatar', trans('customer.avatar'),array('class' => 'col-sm-2 control-label')) !!}
 
 						<div class="col-sm-8">
 						{!! Form::file('avatar', Input::old('avatar'), array('class' => 'form-control')) !!}
@@ -44,20 +50,6 @@
 					{!! Form::label('address', trans('customer.address'),array('class' => 'col-sm-2 control-label')) !!}
 						<div class="col-sm-8">
 						{!! Form::text('address', Input::old('address'), array('class' => 'form-control')) !!}
-						</div>
-					</div>
-
-					<div class="form-group">
-					{!! Form::label('city', trans('customer.city'),array('class' => 'col-sm-2 control-label')) !!}
-						<div class="col-sm-8">
-						{!! Form::text('city', Input::old('city'), array('class' => 'form-control')) !!}
-						</div>
-					</div>
-
-					<div class="form-group">
-					{!! Form::label('state', trans('customer.state'),array('class' => 'col-sm-2 control-label')) !!}
-						<div class="col-sm-8">
-						{!! Form::text('state', Input::old('state'), array('class' => 'form-control')) !!}
 						</div>
 					</div>
 
@@ -74,14 +66,23 @@
 						{!! Form::text('company_name', Input::old('company_name'), array('class' => 'form-control')) !!}
 						</div>
 					</div>
+					
+					<div class="form-group">
+					{!! Form::label('comment', trans('customer.comment'),array('class' => 'col-sm-2 control-label')) !!}
+						<div class="col-sm-8">
+						{!! Form::text('comment', Input::old('comment'), array('class' => 'form-control')) !!}
+						</div>
+					</div>
+					
 					<div class="form-group">
 					{!! Form::label('account', trans('customer.account') .' #',array('class' => 'col-sm-2 control-label')) !!}
 						<div class="col-sm-8">
 						{!! Form::text('account', Input::old('account'), array('class' => 'form-control')) !!}
 						</div>
 					</div>
-					{!! Form::submit(trans('customer.submit'), array('class' => 'btn btn-primary')) !!}
-
+					<div class="pull-right">
+					{!! Form::submit(trans('customer.submit'), array('class' => 'btn btn-primary btn-flat')) !!}
+					</div>
 					{!! Form::close() !!}
 					</div>
 				</div>

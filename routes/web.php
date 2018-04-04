@@ -17,8 +17,19 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::resource('account', 'Backend\AccountController');
-Route::resource('customer', 'Backend\CustomerController');
+Route::group(['middleware' => 'auth'], function() {
+    
+    Route::get('home', 'HomeController@index');
+    
+    Route::resource('products', 'ProductsController');
+    Route::resource('customers', 'Backend\CustomersController');
+    Route::resource('users', 'UsersController');
+    Route::resource('suppliers', 'SuppliersController');
+    Route::resource('stores', 'StoresController');
+    Route::resource('stocks', 'StocksController');
+    Route::resource('orders', 'OrdersController');
+    Route::resource('refunds', 'RefundsController');
+    
+    Route::get('/db-backup', array('as' => 'db-backup', 'uses' => 'UsersController@dbBackup'));
+    
+});

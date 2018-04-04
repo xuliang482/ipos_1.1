@@ -4,13 +4,14 @@
 
     <section class="content container-fluid">
         <div class="row">
+        
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
                         <div class="pull-right">
                             <div class="pull-right-btn" style="margin-right: 10px">
 
-                                <a href="" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#filter-modal">
+                                <a href="{{ URL::route('customers.create') }}" class="btn btn-primary btn-flat" >
                                     <i class="fa fa-plus"></i>
                                     {{trans('customer.create')}}
                                 </a>
@@ -32,7 +33,18 @@
 
                             </div>
                         </div>
+                    
+                	   <div class="col-md-3">
+                        	@if (Session::has('message'))
+                    			<div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                <h4><i class="icon fa fa-check"></i> {{trans('customer.message_successful_label')}}</h4>
+                                {{ Session::get('message') }}
+                              </div>
+                			@endif
+						</div>
                     </div>
+
 
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -51,7 +63,7 @@
                             @foreach($customer as $value)
                             <tr>
                                 <td>{{ $value->id }}</td>
-                                <td>{!! Html::image('/images/' . $value->avatar, 'a picture', array('class' => 'thumb')) !!}</td>
+                                <td>{!! Html::image('/images/customers/' . $value->avatar, 'a picture', array('class' => 'thumb')) !!}</td>
                                 <td>{{ $value->name }}</td>
                                 <td>{{ $value->email }}</td>
                                 <td>{{ $value->phone_number }}</td>
@@ -76,5 +88,16 @@
             </div>
         </div>
     </<section>
-    
+ 
 @endsection
+
+@section('scripts')
+
+   <script>
+    $("div.alert").not('.alert-important').delay(4000).slideUp(200, function() {
+        $(this).alert('close');
+    });
+	</script>
+	
+@endsection
+

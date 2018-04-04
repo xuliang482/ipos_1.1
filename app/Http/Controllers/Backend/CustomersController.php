@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 use Encore\Admin\Admin;
 use Encore\Admin\Grid;
+use Intervention\Image\ImageManagerStatic as Image;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 
@@ -46,7 +52,41 @@ class CustomersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // store
+        $customers = new Customer;
+        $customers->name = Input::get('name');
+        $customers->gender = Input::get('gender');
+        $customers->email = Input::get('email');
+        $customers->phone_number = Input::get('phone_number');
+        $customers->address = Input::get('address');
+        $customers->province = Input::get('province');
+        $customers->city = Input::get('city');
+        $customers->district = Input::get('district');
+        $customers->zip = Input::get('zip');
+        $customers->company_name = Input::get('company_name');
+        $customers->comment = Input::get('comment');
+        $customers->account = Input::get('account');
+        $customers->save();
+        // process avatar
+        $image = $request->file('avatar');
+        if(!empty($image)) {
+            $avatarName = 'cus' . $customers->id . '.' .
+                $request->file('avatar')->getClientOriginalExtension();
+                
+                $request->file('avatar')->move(
+                    base_path() . '/public/images/customers/', $avatarName
+                    );
+                $img = Image::make(base_path() . '/public/images/customers/' . $avatarName);
+                $img->resize(100, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                    $img->save();
+                    $customerAvatar = Customer::find($customers->id);
+                    $customerAvatar->avatar = $avatarName;
+                    $customerAvatar->save();
+        }
+        Session::flash('message',  Lang::get('customer.message_successful_create'));
+        return Redirect::to('customers');
     }
 
     /**

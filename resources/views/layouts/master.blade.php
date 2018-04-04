@@ -52,6 +52,6 @@ desired effect
 
 </div>
 <script src="{{asset('js/app.js')}}"></script>
-@yield('script')
+@yield('scripts')
 </body>
 </html>
