@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 
-class CustomerController extends Controller
+class CustomersController extends Controller
 {
     
     public function __construct()
@@ -35,7 +35,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers.create');
     }
 
     /**
