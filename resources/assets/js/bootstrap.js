@@ -59,3 +59,8 @@ if (token) {
  * admin-lte
  */
 require('admin-lte');
+
+/**
+ * bootstrap-fileinput
+ */
+require('bootstrap-fileinput');

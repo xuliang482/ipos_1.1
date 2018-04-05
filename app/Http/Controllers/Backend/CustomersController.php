@@ -110,7 +110,9 @@ class CustomersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customers = Customer::find($id);
+        return view('customers.edit')
+            ->with('customer', $customers);
     }
 
     /**
