@@ -59,7 +59,7 @@
 							{!! Form::label('avatar', trans('customer.avatar'),array('class' => 'col-sm-2 control-label')) !!}
 
 							<div class="col-sm-8">
-							{!! Form::file('avatar', Input::old('avatar'), array('class' => 'form-control')) !!}
+								<input name="avatar" type="file" class="file" multiple data-show-upload="false" data-show-caption="true" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -92,6 +92,7 @@
 							{!! Form::text('account', Input::old('account'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
+
 					</div>
 					<div class="box-footer">
 						{{ csrf_field() }}
