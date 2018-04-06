@@ -59,7 +59,7 @@
 							{!! Form::label('avatar', trans('customer.avatar'),array('class' => 'col-sm-2 control-label')) !!}
 
 							<div class="col-sm-8">
-								<input name="avatar" type="file" class="file" multiple data-show-upload="false" data-show-caption="true" >
+								<input name="avatar" id="avatar" type="file" class="file" multiple data-show-upload="false" data-show-caption="true" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -110,7 +110,16 @@
 					</div>
 				</div>
             </div>
-        </div>
     </section>
 
+@endsection
+@section('scripts')
+	<script>
+
+		$("#avatar").fileinput({
+			theme: 'fa',
+			language: 'zh'
+		});
+
+	</script>
 @endsection
