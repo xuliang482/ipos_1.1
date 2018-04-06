@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Backend;
 
-use Encore\Admin\Admin;
-use Encore\Admin\Grid;
 use Intervention\Image\ImageManagerStatic as Image;
 
 use Illuminate\Http\Request;
@@ -15,7 +13,6 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
-
 
 class CustomersController extends Controller
 {
@@ -32,7 +29,7 @@ class CustomersController extends Controller
     public function index()
     {
         
-        $customers = Customer::all();
+        $customers = Customer::paginate(15);
         return view('customers.index')->with('customer', $customers);
     }
 
@@ -139,32 +136,5 @@ class CustomersController extends Controller
     }
     
     
-    /**
-     * Make a grid builder.
-     *
-     * @return Grid
-     */
-    protected function grid()
-    {
-        return Admin::grid(Customer::class, function (Grid $grid) {
-            $grid->id('ID')->sortable();
-            $grid->column('name');
-            
-            $grid->picture('picture')->image();
-            $grid->column('email');
-            
-            $grid->active()->value(function ($active) {
-                return $active ?
-                "<i class='fa fa-check' style='color:green'></i>" :
-                "<i class='fa fa-close' style='color:red'></i>";
-            });
-                
-            $grid->column('phone_number');
-            
-            $grid->created_at();
-            $grid->updated_at();
-                
-        });
-    }
     
 }

@@ -8,7 +8,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <div class="pull-right">
+                       <div class="pull-right">
                             <div class="pull-right-btn" style="margin-right: 10px">
 
                                 <a href="{{ URL::route('customers.create') }}" class="btn btn-primary btn-flat" >
@@ -44,8 +44,6 @@
                 			@endif
 						</div>
                     </div>
-
-
                     <div class="box-body">
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
@@ -84,11 +82,14 @@
                             </tbody>
                         </table>
                     </div>
+                	<div class="box-footer pull-right">
+                		{{ $customer->links('partials.paginator') }}
+                	</div>
                 </div>
             </div>
         </div>
-    </<section>
- 
+    </section>
+ 	
 @endsection
 
 @section('scripts')
