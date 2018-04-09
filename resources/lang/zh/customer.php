@@ -33,6 +33,7 @@ return [
     'reset'=> '重置',
     'submit'=> '提交',
     'create'=> '新客户',
+    'import'=> 'Excel 导入',
     'export'=> '导出',
     'edit'	=> '编辑',
     'delete'=> '删除',
@@ -49,5 +50,7 @@ return [
 
     'validation_name_required' => '客户名称是必须输入项',
     'validation_phone_number_required' => '电话号码是必须输入项',
+    'validation_email_required' => '邮箱地址是必须输入项',
+    'validation_email_address' => '请输入一个有效的电子邮件地址',
     
 ];

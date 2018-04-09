@@ -21,7 +21,6 @@
 					{!! Form::open(array('url' => 'customers', 'files' => true,'class'=>'form-horizontal')) !!}
 					<div class="box-body">
 						<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-
 							{!! Form::label('name', trans('customer.name'), array('class' => 'col-sm-2 control-label')) !!}
 							<div class="col-sm-8">
 							@if($errors->has('name'))
@@ -49,9 +48,14 @@
 							{!! Form::text('phone_number', Input::old('phone_number'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
-						<div class="form-group">
+						<div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
 							{!! Form::label('email', trans('customer.email'),array('class' => 'col-sm-2 control-label')) !!}
 							<div class="col-sm-8">
+							@if($errors->has('email'))
+								@foreach($errors->get('email') as $message)
+									<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label></br>
+								@endforeach
+							@endif
 							{!! Form::text('email', Input::old('email'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
@@ -95,7 +99,7 @@
 
 					</div>
 					<div class="box-footer">
-						{{ csrf_field() }}
+						
 						<div class="col-sm-2"></div>
 						<div class="col-sm-8">
 							<div class="pull-left">

@@ -2,64 +2,43 @@
 
 @section('content')
 
-    <section class="content container-fluid">
-        <div class="row">
-        
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                       <div class="pull-right">
-                            <div class="pull-right-btn" style="margin-right: 10px">
-
-                                <a href="{{ URL::route('customers.create') }}" class="btn btn-primary btn-flat" >
-                                    <i class="fa fa-plus"></i>
-                                    {{trans('customer.create')}}
-                                </a>
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-warning btn-flat">{{trans('customer.export')}}</button>
-                                    <button type="button" class="btn btn-warning btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="fa fa-ellipsis-h"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a href="#">Action</a></li>
-                                        <li><a href="#">Another action</a></li>
-                                        <li><a href="#">Something else here</a></li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a></li>
-                                    </ul>
-
-                                </div>
-
-                            </div>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+            	<div class="box-header">
+            		<div class="pull-right">
+                        <div class="btn-group pull-right" style="margin-right: 10px">
+                            <a href="" class="btn btn-sm btn-primary btn-flat"><i class="glyphicon glyphicon-import"></i>&nbsp;&nbsp;{{trans('customer.import')}}</a>
+                         </div>
+            	
+                		<div class="btn-group pull-right" style="margin-right: 5px">
+                            <a href="{{ route('customers.create') }}" class="btn btn-sm btn-success btn-flat">
+                                <i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;{{trans('customer.create')}}
+                            </a>
                         </div>
-                    
-                	   <div class="col-md-3">
-                        	@if (Session::has('message'))
-                    			<div class="alert alert-success alert-dismissible">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                <h4><i class="icon fa fa-check"></i> {{trans('customer.message_successful_label')}}</h4>
-                                {{ Session::get('message') }}
-                              </div>
-                			@endif
-						</div>
                     </div>
-                    <div class="box-body">
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
+            	</div>
+            	<div class="box-body table-responsive no-padding">
+    		 		<table class="table table-hover">
+                        <thead>
                             <tr>
-                                <td>{{trans('customer.id')}}</td>
-                                <td>{{trans('customer.avatar')}}</td>
-                                <td>{{trans('customer.name')}}</td>
-                                <td>{{trans('customer.email')}}</td>
-                                <td>{{trans('customer.phone_number')}}</td>
-                                <td>{{trans('customer.description')}}</td>
-                                <td>{{trans('customer.operation')}}</td>
+                             	<th>
+<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="minimal" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
+                             	</th>
+                                <th class="sorting">{{trans('customer.id')}}</th>
+                                <th class="sorting">{{trans('customer.avatar')}}</th>
+                                <th class="sorting">{{trans('customer.name')}}</th>
+                                <th class="sorting">{{trans('customer.email')}}</th>
+                                <th class="sorting">{{trans('customer.phone_number')}}</th>
+                                <th class="sorting">{{trans('customer.description')}}</th>
+                                <th class="sorting">{{trans('customer.operation')}}</th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             @foreach($customer as $value)
                             <tr>
+                            	<td><div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="minimal" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
                                 <td>{{ $value->id }}</td>
                                 <td>{!! Html::image('/images/customers/' . $value->avatar, 'a picture', array('class' => 'thumb')) !!}</td>
                                 <td>{{ $value->name }}</td>
@@ -67,28 +46,29 @@
                                 <td>{{ $value->phone_number }}</td>
                                 <td>{{ $value->description }}</td>
                                 <td>
-
-                                    <div class="pull-right">
-                                        <a class="btn btn-primary btn-flat" style="margin-right: 10px" href="{{ URL::to('customers/' . $value->id . '/edit') }}">{{trans('customer.edit')}}</a>
-                                        {!! Form::open(array('url' => 'customers/' . $value->id, 'class' => 'pull-right')) !!}
-                                            {!! Form::hidden('_method', 'DELETE') !!}
-                                            {!! Form::submit(trans('customer.delete'), array('class' => 'btn btn-warning btn-flat')) !!}
-                                        {!! Form::close() !!}
-                                    </div>
+                                <a href="{{ URL::to('customers/' . $value->id . '/edit') }}">
+                                	<i class="fa fa-edit"></i>
+                                </a>
                                 </td>
 
                             </tr>
                             @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                	<div class="box-footer pull-right">
-                		{{ $customer->links('partials.paginator') }}
-                	</div>
-                </div>
-            </div>
-        </div>
-    </section>
+                        </tbody>
+                        <tfoot></tfoot>
+                    </table>
+        		 
+        		 	<div class="box-footer clearfix">
+        		 		<div class="col-sm-7">
+    						<div class="pull-right">
+                    			{{ $customer->links('partials.paginator') }}
+                    		</div>
+                    	</div>
+        		 	</div>
+            	</div>
+           		 </div>
+         </div>
+     </div>
+</section>
  	
 @endsection
 
