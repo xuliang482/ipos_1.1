@@ -1,6 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
+	<section class="content-header">
+		<h1>{{trans('customer.title')}}
+			<small>{{trans('customer.create')}}</small>
+		</h1>
+	</section>
 
     <section class="content container-fluid">
         <div class="row">
@@ -8,7 +13,7 @@
             	<div class="box box-info">
 					<!-- header start -->
 					<div class="box-header with-border">
-						<h3 class="box-title">{{trans('customer.title')}}</h3>
+						<h3 class="box-title">{{trans('customer.create')}}</h3>
 						<div class="box-tools">
 							<div class="btn-group pull-right" style="margin-right: 10px">
 								<a href="{{ URL::route('customers.index') }}" class="btn btn-sm btn-default btn-flat"><i class="fa fa-list"></i>&nbsp;{{trans('customer.list')}}</a>
@@ -99,7 +104,6 @@
 
 					</div>
 					<div class="box-footer">
-						
 						<div class="col-sm-2"></div>
 						<div class="col-sm-8">
 							<div class="pull-left">

@@ -27,7 +27,7 @@ class CustomerRequest extends FormRequest
         return [
             'name' => 'required',
             'phone_number' => 'required',
-            'email' => 'email',
+            'email' => 'required|email',
             'avatar' => 'mimes:jpeg,bmp,png'
         ];
     }
@@ -41,7 +41,9 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name.required'    => Lang::get('customer.validation_name_required'),
-            'phone_number.required'    => Lang::get('customer.validation_phone_number_required')
+            'phone_number.required'    => Lang::get('customer.validation_phone_number_required'),
+            'email.required'    => Lang::get('customer.validation_email_required'),
+            'email.email'    => Lang::get('customer.validation_email_address')
         ];
     }
 

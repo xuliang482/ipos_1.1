@@ -64,3 +64,15 @@ require('admin-lte');
  * bootstrap-fileinput
  */
 require('bootstrap-fileinput');
+
+/**
+ * bootstrap-fileinput
+ * lang zh
+ */
+require('bootstrap-fileinput/js/locales/zh.js');
+
+/**
+ * bootstrap-fileinput
+ * lang zh
+ */
+require('admin-lte/plugins/iCheck/icheck.js');
