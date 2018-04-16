@@ -23,9 +23,7 @@
     		 		<table class="table table-hover">
                         <thead>
                             <tr>
-                             	<th>
-<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="minimal" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div>
-                             	</th>
+                             	<th><input type="checkbox" class="check"></th>
                                 <th class="sorting">{{trans('item.id')}}</th>
                                 <th class="sorting">{{trans('item.avatar')}}</th>
                                 <th class="sorting">{{trans('item.upc_ean_isbn')}}</th>
@@ -41,7 +39,7 @@
                         <tbody>
                             @foreach($item as $value)
                             <tr>
-                            	<td><div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" class="minimal" checked="" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div></td>
+                            	<td><input type="checkbox" class="check" name="ids[]" id="customer_id_{{ $value->id }}" value="{{ $value->id }}"></td>
                                 <td>{{ $value->id }}</td>
                                 <td>{!! Html::image('/images/items/' . $value->avatar, 'a picture', array('class' => 'thumb')) !!}</td>
                                 <td>{{ $value->upc_ean_isbn }}</td>
@@ -83,6 +81,32 @@
    <script>
     $("div.alert").not('.alert-important').delay(4000).slideUp(200, function() {
         $(this).alert('close');
+    });
+
+    //iCheck for checkbox
+    $(document).ready(function(){
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_minimal-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+
+    $('#check-all').on('ifChecked', function(event) {
+        $('.check').iCheck('check');
+    });
+    $('#check-all').on('ifUnchecked', function(event) {
+        $('.check').iCheck('uncheck');
+    });
+    // Removed the checked state from "All" if any checkbox is unchecked
+    $('#check-all').on('ifChanged', function(event){
+        if(!this.changed) {
+            this.changed=true;
+            $('#check-all').iCheck('check');
+        } else {
+            this.changed=false;
+            $('#check-all').iCheck('uncheck');
+        }
+        $('#check-all').iCheck('update');
     });
 	</script>
 	

@@ -88,7 +88,7 @@ class ItemsController extends Controller
                     $itemAvatar->save();
         }
         Session::flash('message', Lang::get('item.message_successful_create'));
-        return Redirect::to('items/create');
+        return Redirect::to('items');
     }
     
     /**

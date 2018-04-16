@@ -39,6 +39,10 @@ return [
     'delete'=> '删除',
 
 
+    'total' => '共有',
+    'per_page' => '每页显示：',
+    'unit'=> '条',
+
     'title' => '客户信息',
     'back'=> '返回',
     'list'=> '一览',
@@ -46,7 +50,7 @@ return [
     'message_successful_label'=> '成功',
     'message_successful_create'=> '您已成功添加客户',
     'message_successful_delete'=> '您已成功删除客户',
-    'message_successful_edit'=> '您已成功更新客户',
+    'message_successful_update'=> '您已成功更新客户',
 
     'validation_name_required' => '客户名称是必须输入项',
     'validation_phone_number_required' => '电话号码是必须输入项',

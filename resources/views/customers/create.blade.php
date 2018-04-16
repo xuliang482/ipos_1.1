@@ -33,7 +33,7 @@
 									<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label></br>
 								@endforeach
 							@endif
-							{!! Form::text('name', Input::old('name'), array('class' => 'form-control','placeholder'=>'Customer name...')) !!}
+							{!! Form::text('name', Input::old('name'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="form-group">
@@ -68,7 +68,7 @@
 							{!! Form::label('avatar', trans('customer.avatar'),array('class' => 'col-sm-2 control-label')) !!}
 
 							<div class="col-sm-8">
-								<input name="avatar" id="avatar" type="file" class="file" multiple data-show-upload="false" data-show-caption="true" >
+								<input name="avatar" id="avatar" type="file" class="file" accept="image/*" data-show-caption="true" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -125,8 +125,16 @@
 	<script>
 
 		$("#avatar").fileinput({
+
 			theme: 'fa',
-			language: 'zh'
+			language: 'zh',
+			showUpload: false,
+			showCaption: false,
+			showRemove:false,
+			browseIcon: "<i class='glyphicon glyphicon-picture'></i> ",
+			browseClass: "btn btn-primary btn-flat",
+			allowedFileExtensions: ["jpg", "png"]
+
 		});
 
 	</script>

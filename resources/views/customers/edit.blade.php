@@ -57,9 +57,8 @@
 						</div>
 						<div class="form-group">
 							{!! Form::label('avatar', trans('customer.avatar'),array('class' => 'col-sm-2 control-label')) !!}
-
 							<div class="col-sm-8">
-								<input name="avatar" id="avatar" type="file" class="file"  data-show-preview="true" data-show-caption="true" data-msg-placeholder="{{$customer->avatar}}">
+								<input name="avatar" id="avatar" type="file" class="file"  accept="image/*" data-show-preview="true" data-show-caption="true" data-msg-placeholder="{{$customer->avatar}}">
 							</div>
 						</div>
 						<div class="form-group">
@@ -118,23 +117,31 @@
 	<script>
 
 		$("#avatar").fileinput({
+
 			theme: 'fa',
 			language: 'zh',
 			showUpload: false,
 			showCaption: false,
 			showRemove:false,
+			browseIcon: "<i class='glyphicon glyphicon-picture'></i> ",
 			browseClass: "btn btn-primary btn-flat",
-			fileType: "any",
-			previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-			overwriteInitial: false,
+			allowedFileExtensions: ["jpg", "png"],
 			initialPreviewAsData: true,
 			initialPreview: [
 				"{{url("/images/customers/".$customer->avatar)}}"
 			],
 			initialPreviewConfig: [
-				{caption: "{{$customer->avatar}}", size: 329892, width: "120px", url: "{{url("/images/customers/".$customer->avatar)}}", key: 1}
-			]
+				{
+					caption: "{{$customer->avatar}}",
+					width: "120px",
+					url: "{{url("/images/customers/".$customer->avatar)}}",
+					key: 1,
+				}
+			],
+			initialPreviewShowDelete:false,
+
 		});
 
 	</script>
-	@endsection
+
+@endsection

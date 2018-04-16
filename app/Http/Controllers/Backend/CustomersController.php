@@ -26,10 +26,11 @@ class CustomersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        $customers = Customer::paginate(10);
+
+        $per_page = Input::get('per_page') ?: 10;
+        $customers = Customer::paginate($per_page);
         return view('customers.index')->with('customer', $customers);
     }
 
@@ -121,7 +122,40 @@ class CustomersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $customers = Customer::find($id);
+        $customers->name = Input::get('name');
+        $customers->email = Input::get('email');
+        $customers->phone_number = Input::get('phone_number');
+        $customers->address = Input::get('address');
+        $customers->province = Input::get('province');
+        $customers->city = Input::get('city');
+        $customers->district = Input::get('district');
+        $customers->zip = Input::get('zip');
+        $customers->company_name = Input::get('company_name');
+        $customers->comment = Input::get('comment');
+        $customers->account = Input::get('account');
+        $customers->save();
+        // process avatar
+        $image = $request->file('avatar');
+        if(!empty($image)) {
+            $avatarName = 'cus' . $id . '.' .
+                $request->file('avatar')->getClientOriginalExtension();
+
+            $request->file('avatar')->move(
+                base_path() . '/public/images/customers/', $avatarName
+            );
+            $img = Image::make(base_path() . '/public/images/customers/' . $avatarName);
+            $img->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save();
+            $customerAvatar = Customer::find($id);
+            $customerAvatar->avatar = $avatarName;
+            $customerAvatar->save();
+        }
+        // redirect
+        Session::flash('message', Lang::get('customer.message_successful_update'));
+        return Redirect::to('customers');
     }
 
     /**
@@ -130,11 +164,14 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $ids = $request->ids;
+        Customer::destroy($ids);
+        // redirect
+        Session::flash('message', Lang::get('customer.message_successful_delete'));
+        return Redirect::to('customers');
     }
-    
-    
+
     
 }
