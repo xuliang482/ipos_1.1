@@ -11,6 +11,13 @@
         <div class="col-xs-12">
             <div class="box">
             	<div class="box-header with-border">
+                    @if (Session::has('message')) 
+                     <div id="success-alert">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
+                    </div>
+                    @endif
+            
                     <div class="pull-right">
                         <div class="btn-group" style="margin-right: 5px">
                             <a href="{{ route('customers.create') }}" class="btn btn-sm btn-success btn-flat">
@@ -22,7 +29,11 @@
                          </div>
                     </div>
                 </div>
-                {!! Form::open(array('url' => 'customers/destroy', 'method' => 'DELETE','class'=>'form-horizontal')) !!}
+                <div id="toolbar">
+                  <button id="remove" class="btn btn-danger btn-flat" disabled>
+                    <i class="fa fa-trash"></i> {{trans('customer.delete')}}
+                  </button>
+                </div>
                 <div class="box-body">
                     <table id="table"
                            data-toolbar="#toolbar"
@@ -37,22 +48,21 @@
                            data-classes="table table-hover"
                            data-sort-name="id"
        					   data-sort-order="desc"
-       					   data-click-to-select="true">
+       					   >
                        <thead>
                             <tr>
-                             	<th data-field="state" data-checkbox="true" width="10px;"></th>
+                             	<th data-field="state"  data-checkbox="true" width="10px;"></th>
                                 <th data-field="id" 	data-sortable="true">{{trans('customer.id')}}</th>
                                 <th data-field="avatar" data-sortable="true">{{trans('customer.avatar')}}</th>
                                 <th data-field="name"   data-sortable="true">{{trans('customer.name')}}</th>
                                 <th data-field="email"  data-sortable="true">{{trans('customer.email')}}</th>
                                 <th data-field="phone_number" data-sortable="true">{{trans('customer.phone_number')}}</th>
                                 <th data-field="comment" data-sortable="true">{{trans('customer.comment')}}</th>
-                                <th data-field="operation" >{{trans('customer.operation')}}</th>
+                                <th data-field="operation" data-formatter="operateFormatter" data-events="operateEvents">{{trans('customer.operation')}}</th>
                             </tr>
                     	</thead>
                     </table>
                 </div>
-                {!! Form::close() !!}
             </div>
          </div>
      </div>
@@ -63,7 +73,7 @@
 @section('scripts')
 
    <script>
-    $("div.alert").not('.alert-important').delay(4000).slideUp(200, function() {
+    $("div.alert").not('.alert-import').delay(4000).slideUp(200, function() {
         $(this).alert('close');
     });
 
@@ -109,16 +119,7 @@
 
     function initTable() {
       $table.bootstrapTable({
-        height: getHeight(),
-        columns: [
-           {
-              field: 'operate',
-              title: 'Item Operate',
-              align: 'center',
-              events: operateEvents,
-              formatter: operateFormatter
-            }
-        ]
+        height: getHeight()
       });
       // sometimes footer render error.
       setTimeout(() => {
@@ -145,6 +146,23 @@
       });
       $remove.click(() => {
         const ids = getIdSelections();
+        console.log(ids);
+        var url = 'customers/' + ids;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            data: {
+                "id": ids
+            },
+            success: function (response) {
+          	  console.log(response);
+            }
+        });
         $table.bootstrapTable('remove', {
           field: 'id',
           values: ids
@@ -171,44 +189,50 @@
       return res;
     }
 
-    function detailFormatter(index, row) {
-      const html = [];
-      $.each(row, (key, value) => {
-        html.push(`<p><b>${key}:</b> ${value}</p>`);
-      });
-      return html.join('');
-    }
-
     function operateFormatter(value, row, index) {
       return [
-        '<a class="like" href="javascript:void(0)" title="Like">',
-        '<i class="fa fa-heart"></i>',
-        '</a>  ',
-        '<a class="remove" href="javascript:void(0)" title="Remove">',
-        '<i class="fa fa-remove"></i>',
+        '<a class="edit ml10" href="javascript:void(0)" title="编辑">',
+        '<i class="fa fa-edit"></i>',
+    	'</a>&nbsp;&nbsp;',
+        '<a class="remove" href="javascript:void(0)" title="删除">',
+        '<i class="fa fa-trash"></i>',
         '</a>'
       ].join('');
     }
 
     window.operateEvents = {
-      'click .like': function (e, value, row, index) {
-        alert(`You click like action, row: ${JSON.stringify(row)}`);
+    	    
+      'click .edit': function (e, value, {id}, index) {
+          var url = 'customers/'+ [id] +'/edit';
+          window.location.href = url;
+          console.log(value, row, index);
       },
+      
       'click .remove': function(e, value, {id}, index) {
-        $table.bootstrapTable('remove', {
-          field: 'id',
-          values: [id]
-        });
+
+          var url = 'customers/'+ [id];
+          $.ajaxSetup({
+              headers: {
+                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+          });
+          $.ajax({
+              url: url,
+              type: 'DELETE',
+              data: {
+                  "id": [id]
+              },
+              success: function (response) {
+            	  console.log(response);
+              }
+          });
+
+          $table.bootstrapTable('remove', {
+              field: 'id',
+              values: [id]
+            });
       }
     };
-
-    function totalPriceFormatter(data) {
-      let total = 0;
-      $.each(data, (i, {price}) => {
-        total += +(price.substring(1));
-      });
-      return `$${total}`;
-    }
 
     function getHeight() {
       return $(window).height() - $('h1').outerHeight(true);

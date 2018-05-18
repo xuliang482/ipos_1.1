@@ -29,8 +29,7 @@ class CustomersController extends Controller
     public function index(Request $request)
     {
 
-        $per_page = Input::get('per_page') ?: 10;
-        $customers = Customer::paginate($per_page);
+        $customers = Customer::all('id','avatar','name','email','phone_number','comment');
         return view('customers.index')->with('customer', $customers);
     }
 
@@ -161,12 +160,12 @@ class CustomersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  array|int  $ids
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy($ids)
     {
-        $ids = $request->ids;
+        //$ids = $request->ids;
         Customer::destroy($ids);
         // redirect
         Session::flash('message', Lang::get('customer.message_successful_delete'));
