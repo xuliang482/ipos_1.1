@@ -35,7 +35,15 @@
                   </button>
                 </div>
                 <div class="box-body">
-                   <table id="table">
+                   <table id="table"
+                          data-toolbar="#toolbar"
+                          data-show-refresh="true"
+                          data-show-columns="true"
+                          data-pagination="true"
+                          data-search="true"
+                          data-click-to-select="true"
+                          data-sort-name="id"
+                          data-sort-order="desc">
                        <thead>
                             <tr>
                              	<th data-field="state"  data-checkbox="true" width="10px;"></th>
@@ -100,12 +108,14 @@
 		$table.bootstrapTable({
 	        data: {!! $customer !!}
 	    });
+
 	});
 
 
     function initTable() {
         $table.bootstrapTable({
-          height: getHeight(),
+            height: getHeight(),
+            buttonsClass:'default btn-flat'
         });
         // sometimes footer render error.
         setTimeout(() => {
@@ -172,10 +182,7 @@
         return [
           '<a class="edit" href="javascript:void(0)" title="编辑">',
           '<i class="fa fa-edit"></i>',
-      	  '</a>&nbsp;&nbsp;',
-          '<a class="remove" href="javascript:void(0)" title="删除">',
-          '<i class="fa fa-trash"></i>',
-          '</a>'
+      	  '</a>&nbsp;&nbsp;'
         ].join('');
       }
     
@@ -185,7 +192,13 @@
               window.location.href = url;
         }
     };
-    
+
+    function getHeight() {
+        return $(window).height() - $('h1').outerHeight(true);
+    }
+
+
+
     $(() => {
     	initTable();
     })
