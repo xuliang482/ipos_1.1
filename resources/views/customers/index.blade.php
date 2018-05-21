@@ -35,20 +35,7 @@
                   </button>
                 </div>
                 <div class="box-body">
-                    <table id="table"
-                           data-toolbar="#toolbar"
-                           data-search="true"
-                           data-show-refresh="true"
-                           data-show-columns="true"
-                           data-show-export="true"
-                           data-minimum-count-columns="2"
-                           data-pagination="true"
-                           data-id-field="id"
-                           data-page-list="[10, 25, 50, 100, ALL]"
-                           data-classes="table table-hover"
-                           data-sort-name="id"
-       					   data-sort-order="desc"
-       					   >
+                   <table id="table">
                        <thead>
                             <tr>
                              	<th data-field="state"  data-checkbox="true" width="10px;"></th>
@@ -57,8 +44,8 @@
                                 <th data-field="name"   data-sortable="true">{{trans('customer.name')}}</th>
                                 <th data-field="email"  data-sortable="true">{{trans('customer.email')}}</th>
                                 <th data-field="phone_number" data-sortable="true">{{trans('customer.phone_number')}}</th>
-                                <th data-field="comment" data-sortable="true">{{trans('customer.comment')}}</th>
-                                <th data-field="operation" data-formatter="operateFormatter" data-events="operateEvents">{{trans('customer.operation')}}</th>
+              					<th data-field="comment" data-sortable="true">{{trans('customer.comment')}}</th>
+                                <th data-field="operate"  data-formatter="operateFormatter" data-events="operateEvents">{{trans('customer.operation')}}</th>
                             </tr>
                     	</thead>
                     </table>
@@ -71,8 +58,8 @@
 @endsection
 
 @section('scripts')
-
-   <script>
+<script>
+   
     $("div.alert").not('.alert-import').delay(4000).slideUp(200, function() {
         $(this).alert('close');
     });
@@ -105,112 +92,48 @@
     });
 	*/
 
-
-
-    
-    
-    const $table = $('#table');
+	const $table = $('#table');
     const $remove = $('#remove');
     let selections = [];
 
-    var mydata = {!! $customer !!};
-    console.log(mydata);
-    $table.bootstrapTable({data: mydata});
+	$(function () {
+		$table.bootstrapTable({
+	        data: {!! $customer !!}
+	    });
+	});
+
 
     function initTable() {
-      $table.bootstrapTable({
-        height: getHeight()
-      });
-      // sometimes footer render error.
-      setTimeout(() => {
-        $table.bootstrapTable('resetView');
-      }, 200);
-      $table.on('check.bs.table uncheck.bs.table ' +
-                'check-all.bs.table uncheck-all.bs.table', () => {
-        $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
-
-        // save your data, here just save the current page
-        selections = getIdSelections();
-        // push or splice the selections if you want to save all data selections
-      });
-      $table.on('expand-row.bs.table', (e, index, row, $detail) => {
-        if (index % 2 == 1) {
-          $detail.html('Loading from ajax request...');
-          $.get('LICENSE', res => {
-            $detail.html(res.replace(/\n/g, '<br>'));
-          });
-        }
-      });
-      $table.on('all.bs.table', (e, name, args) => {
-        console.log(name, args);
-      });
-      $remove.click(() => {
-        const ids = getIdSelections();
-        console.log(ids);
-        var url = 'customers/' + ids;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+        $table.bootstrapTable({
+          height: getHeight(),
         });
-        $.ajax({
-            url: url,
-            type: 'DELETE',
-            data: {
-                "id": ids
-            },
-            success: function (response) {
-          	  console.log(response);
-            }
+        // sometimes footer render error.
+        setTimeout(() => {
+          $table.bootstrapTable('resetView');
+        }, 200);
+        $table.on('check.bs.table uncheck.bs.table ' +
+                  'check-all.bs.table uncheck-all.bs.table', () => {
+          $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+
+          // save your data, here just save the current page
+          selections = getIdSelections();
+          // push or splice the selections if you want to save all data selections
         });
-        $table.bootstrapTable('remove', {
-          field: 'id',
-          values: ids
+        $table.on('expand-row.bs.table', (e, index, row, $detail) => {
+          if (index % 2 == 1) {
+            $detail.html('Loading from ajax request...');
+            $.get('LICENSE', res => {
+              $detail.html(res.replace(/\n/g, '<br>'));
+            });
+          }
         });
-        $remove.prop('disabled', true);
-      });
-      $(window).resize(() => {
-        $table.bootstrapTable('resetView', {
-          height: getHeight()
+        $table.on('all.bs.table', (e, name, args) => {
+          console.log(name, args);
         });
-      });
-    }
-
-
-
-    function getIdSelections() {
-      return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
-    }
-
-    function responseHandler(res) {
-      $.each(res.rows, (i, row) => {
-        row.state = $.inArray(row.id, selections) !== -1;
-      });
-      return res;
-    }
-
-    function operateFormatter(value, row, index) {
-      return [
-        '<a class="edit ml10" href="javascript:void(0)" title="编辑">',
-        '<i class="fa fa-edit"></i>',
-    	'</a>&nbsp;&nbsp;',
-        '<a class="remove" href="javascript:void(0)" title="删除">',
-        '<i class="fa fa-trash"></i>',
-        '</a>'
-      ].join('');
-    }
-
-    window.operateEvents = {
-    	    
-      'click .edit': function (e, value, {id}, index) {
-          var url = 'customers/'+ [id] +'/edit';
-          window.location.href = url;
-          console.log(value, row, index);
-      },
-      
-      'click .remove': function(e, value, {id}, index) {
-
-          var url = 'customers/'+ [id];
+        $remove.click(() => {
+          const ids = getIdSelections();
+          console.log(ids);
+          var url = 'customers/' + ids;
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -220,30 +143,53 @@
               url: url,
               type: 'DELETE',
               data: {
-                  "id": [id]
+                  "id": ids
               },
               success: function (response) {
             	  console.log(response);
               }
           });
-
           $table.bootstrapTable('remove', {
-              field: 'id',
-              values: [id]
-            });
+            field: 'id',
+            values: ids
+          });
+          $remove.prop('disabled', true);
+        });
+        $(window).resize(() => {
+          $table.bootstrapTable('resetView', {
+            height: getHeight()
+          });
+        });
       }
+	
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
+      }
+
+	
+    function operateFormatter(value, row, index) {
+        return [
+          '<a class="edit" href="javascript:void(0)" title="编辑">',
+          '<i class="fa fa-edit"></i>',
+      	  '</a>&nbsp;&nbsp;',
+          '<a class="remove" href="javascript:void(0)" title="删除">',
+          '<i class="fa fa-trash"></i>',
+          '</a>'
+        ].join('');
+      }
+    
+    window.operateEvents = {
+        'click .edit': function (e, value, row, index) {
+        	 var url = 'customers/'+ row.id +'/edit';
+              window.location.href = url;
+        }
     };
-
-    function getHeight() {
-      return $(window).height() - $('h1').outerHeight(true);
-    }
-
+    
     $(() => {
     	initTable();
     })
-
-    
-   </script>
+</script>
 	
 @endsection
 
