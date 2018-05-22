@@ -28,7 +28,12 @@
 									<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label></br>
 								@endforeach
 							@endif
-							{!! Form::text('upc_ean_isbn', Input::old('upc_ean_isbn'), array('class' => 'form-control','placeholder'=>'item name...')) !!}
+								<div class="input-group">
+        							<div class="input-group-addon">
+                            			<i class="fa fa-barcode"></i>
+                          			</div>
+								{!! Form::text('upc_ean_isbn', Input::old('upc_ean_isbn'), array('class' => 'form-control')) !!}
+								</div>
 							</div>
 						</div>
 						<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
@@ -39,7 +44,7 @@
 									<label class="control-label" for="inputError"><i class="fa fa-times-circle-o"></i>{{$message}}</label></br>
 								@endforeach
 							@endif
-							{!! Form::text('name', Input::old('name'), array('class' => 'form-control','placeholder'=>'item name...')) !!}
+							{!! Form::text('name', Input::old('name'), array('class' => 'form-control')) !!}
 							</div>
 						</div>
 						<div class="form-group {{ $errors->has('category') ? 'has-error' : '' }}">

@@ -19,8 +19,11 @@
                     </div>
             	</div>
             	<div id="toolbar">
-                  <button id="remove" class="btn btn-danger btn-flat" disabled>
+                  <button id="remove" class="btn btn-default btn-flat" disabled>
                     <i class="fa fa-trash"></i> {{trans('item.delete')}}
+                  </button>
+                  <button id="generate_barcodes" class="btn btn-default btn-flat" disabled>
+                    <i class="fa fa-barcode"></i> {{trans('item.generate_barcodes')}}
                   </button>
                 </div>
             	<div class="box-body">
@@ -37,7 +40,7 @@
                             <tr>
                              	<th data-field="state"  data-checkbox="true" width="10px;"></th>
                                 <th data-field="id" 	data-sortable="true">{{trans('item.id')}}</th>
-                                <th data-field="avatar" 	data-sortable="true">{{trans('item.avatar')}}</th>
+                                <th data-field="avatar" 	data-sortable="true" data-formatter="avatarFormatter">{{trans('item.avatar')}}</th>
                                 <th data-field="upc_ean_isbn" 	data-sortable="true">{{trans('item.upc_ean_isbn')}}</th>
                                 <th data-field="name" 	data-sortable="true">{{trans('item.name')}}</th>
                                 <th data-field="category" 	data-sortable="true">{{trans('item.category')}}</th>
@@ -67,6 +70,8 @@
     
     const $table = $('#table');
     const $remove = $('#remove');
+    const $generate_barcodes = $('#generate_barcodes');
+    
     let selections = [];
 
 	var json = {!! $items !!};
@@ -78,6 +83,7 @@
 	        data: json
 	    });
 
+		
 	});
 
 	//bootstrap-table init
@@ -91,7 +97,11 @@
         }, 200);
         $table.on('check.bs.table uncheck.bs.table ' +
                   'check-all.bs.table uncheck-all.bs.table', () => {
+                      
           $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+          
+          $generate_barcodes.prop('disabled', !$table.bootstrapTable('getSelections').length);
+          
           selections = getIdSelections();
         });
 
@@ -120,6 +130,15 @@
           });
           $remove.prop('disabled', true);
         });
+
+
+        //生成商品标签
+        $generate_barcodes.click(() => {
+
+        });
+
+
+        
         $(window).resize(() => {
           $table.bootstrapTable('resetView', {
             height: getHeight()
@@ -132,9 +151,24 @@
         return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
       }
 
+   
+    function avatarFormatter(value, row, index) {
+
+    	var url = '{!! asset('/images/items/') !!}/' + value;
+        return [
+        	'<a class="rollover" href="' + url +  '">',
+        	 '<img src="' + url + '">',
+            '</a>'
+       	 
+        ].join('');
+      }
+
 	//the update link to setting
     function operateFormatter(value, row, index) {
         return [
+       	  '<a class="inventory" href="javascript:void(0)" title="更新库存">',
+          '<i class="fa fa-tags"></i>',
+          '</a>&nbsp;&nbsp;',
           '<a class="edit" href="javascript:void(0)" title="编辑">',
           '<i class="fa fa-edit"></i>',
       	  '</a>&nbsp;&nbsp;'
@@ -145,10 +179,19 @@
     window.operateEvents = {
         'click .edit': function (e, value, row, index) {
         	 var url = route + row.id +'/edit';
-              window.location.href = url;
+             window.location.href = url;
         }
     };
 
+
+	$('#filters').on('hidden.bs.select', function(e)
+	{
+        table_support.refresh();
+    });
+
+
+
+    
     function getHeight() {
         return $(window).height() - $('h1').outerHeight(true);
     }
@@ -156,6 +199,17 @@
     $(() => {
     	initTable();
     })
+    
+    
+    $(document).ready(function()
+    {
+        table_support.init({
+            
+        });
+    });
+    
+    
+    
     
 	</script>
 	
