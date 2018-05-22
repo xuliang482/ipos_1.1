@@ -1,5 +1,4 @@
 @extends('layouts.master')
-
 @section('content')
 <section class="content-header">
     <h1>{{trans('customer.title')}}
@@ -57,12 +56,12 @@
                             </tr>
                     	</thead>
                     </table>
-                </div>
+
+				</div>
             </div>
          </div>
      </div>
-</section>
- 	
+</section>	
 @endsection
 
 @section('scripts')
@@ -72,50 +71,25 @@
         $(this).alert('close');
     });
 
-    //iCheck for checkbox
-     /*$(document).ready(function(){
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_minimal-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-
-   
-    $('#check-all').on('ifChecked', function(event) {
-        $('.check').iCheck('check');
-    });
-    $('#check-all').on('ifUnchecked', function(event) {
-        $('.check').iCheck('uncheck');
-    });
-    // Removed the checked state from "All" if any checkbox is unchecked
-    $('#check-all').on('ifChanged', function(event){
-        if(!this.changed) {
-            this.changed=true;
-            $('#check-all').iCheck('check');
-        } else {
-            this.changed=false;
-            $('#check-all').iCheck('uncheck');
-        }
-        $('#check-all').iCheck('update');
-    });
-	*/
-
 	const $table = $('#table');
     const $remove = $('#remove');
     let selections = [];
 
+	var json = {!! $customer !!};
+	var route = "customers/";
+
+	//json data to init
 	$(function () {
 		$table.bootstrapTable({
-	        data: {!! $customer !!}
+	        data: json
 	    });
 
 	});
 
-
+	//bootstrap-table init
     function initTable() {
         $table.bootstrapTable({
-            height: getHeight(),
-            buttonsClass:'default btn-flat'
+            height: getHeight()
         });
         // sometimes footer render error.
         setTimeout(() => {
@@ -124,26 +98,13 @@
         $table.on('check.bs.table uncheck.bs.table ' +
                   'check-all.bs.table uncheck-all.bs.table', () => {
           $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
-
-          // save your data, here just save the current page
           selections = getIdSelections();
-          // push or splice the selections if you want to save all data selections
         });
-        $table.on('expand-row.bs.table', (e, index, row, $detail) => {
-          if (index % 2 == 1) {
-            $detail.html('Loading from ajax request...');
-            $.get('LICENSE', res => {
-              $detail.html(res.replace(/\n/g, '<br>'));
-            });
-          }
-        });
-        $table.on('all.bs.table', (e, name, args) => {
-          console.log(name, args);
-        });
+
         $remove.click(() => {
           const ids = getIdSelections();
           console.log(ids);
-          var url = 'customers/' + ids;
+          var url = route + ids;
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,7 +138,7 @@
         return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
       }
 
-	
+	//the update link to setting
     function operateFormatter(value, row, index) {
         return [
           '<a class="edit" href="javascript:void(0)" title="编辑">',
@@ -185,10 +146,11 @@
       	  '</a>&nbsp;&nbsp;'
         ].join('');
       }
-    
+
+    //the update event to setting 
     window.operateEvents = {
         'click .edit': function (e, value, row, index) {
-        	 var url = 'customers/'+ row.id +'/edit';
+        	 var url = route + row.id +'/edit';
               window.location.href = url;
         }
     };
@@ -197,11 +159,10 @@
         return $(window).height() - $('h1').outerHeight(true);
     }
 
-
-
     $(() => {
     	initTable();
     })
+    
 </script>
 	
 @endsection
