@@ -29,7 +29,7 @@ class CustomersController extends Controller
     public function index(Request $request)
     {
 
-        $customers = Customer::all('id','avatar','name','email','phone_number','comment');
+        $customers = Customer::all();
         return view('customers.index')->with('customer', $customers);
     }
 
@@ -84,7 +84,22 @@ class CustomersController extends Controller
                     $customerAvatar->avatar = $avatarName;
                     $customerAvatar->save();
         }
-        Session::flash('message',  Lang::get('customer.message_successful_create'));
+        //Session::flash('message',  Lang::get('customer.message_successful_create'));
+        
+        $toastr = array(
+            'type' => 'success',
+            'message' => Lang::get('customer.message_successful_create'),
+            'options' => array(
+                    'positionClass'=> 'toast-top-right',
+                    'progressBar'=> true,
+                )
+        );
+        
+        Session::flash('toastr',  $toastr); 
+        
+        
+        //app_toastr($toastr);
+        
         return Redirect::to('customers');
     }
 

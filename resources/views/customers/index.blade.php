@@ -1,4 +1,5 @@
 @extends('layouts.master')
+
 @section('content')
 <section class="content-header">
     <h1>{{trans('customer.title')}}
@@ -6,16 +7,11 @@
     </h1>
 </section>
 <section class="content">
+   @include('partials.toastr')
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
             	<div class="box-header with-border">
-                    @if (Session::has('message')) 
-                     <div id="success-alert">
-                        <button type="button" class="close" data-dismiss="alert">x</button>
-                        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
-                    </div>
-                    @endif
             
                     <div class="pull-right">
                         <div class="btn-group" style="margin-right: 5px">
@@ -65,6 +61,7 @@
 @endsection
 
 @section('scripts')
+
 <script>
    
     $("div.alert").not('.alert-import').delay(4000).slideUp(200, function() {
@@ -83,7 +80,6 @@
 		$table.bootstrapTable({
 	        data: json
 	    });
-
 	});
 
 	//bootstrap-table init

@@ -7,8 +7,17 @@
   <title>{{ config('app.name', '希朗科技') }}</title>
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{csrf_token()}}">
+ 
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
   <link rel="stylesheet" href="{{asset('vendor/laravel-admin/AdminLTE/dist/css/AdminLTE.min.css')}}">
+  <link rel="stylesheet" href="{{asset('vendor/laravel-admin/AdminLTE/plugins/iCheck/minimal/blue.css')}}">
+  <link rel="stylesheet" href="{{asset('vendor/laravel-admin/toastr/build/toastr.min.css')}}">
+  
+  <!-- REQUIRED JS SCRIPTS -->
+  <script src="{{ asset ('vendor/laravel-admin/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+  <script src="{{ asset ('vendor/laravel-admin/AdminLTE/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset ('vendor/laravel-admin/toastr/build/toastr.min.js') }}"></script>
+  
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -46,7 +55,7 @@ desired effect
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-    
+   
     <!-- Main Footer -->
     @include('partials.footer')
 
