@@ -24,10 +24,14 @@
                          </div>
                     </div>
                 </div>
+               
                 <div id="toolbar">
-                  <button id="remove" class="btn btn-danger btn-flat" disabled>
-                    <i class="fa fa-trash"></i> {{trans('customer.delete')}}
-                  </button>
+                 {!! Form::open(array('url' => 'customers/', 'class' => 'pull-right')) !!}
+                    {!! Form::hidden('_method', 'DELETE') !!}
+                  	<button id="remove" class="btn btn-danger btn-flat" disabled data-toggle="modal" data-target="#confirmDelete" data-title="{{trans('customer.title')}}" data-message="{{trans('customer.message_confirm_delete')}}">
+                    	<i class="fa fa-trash"></i> {{trans('customer.delete')}}
+                 	 </button>
+                {!! Form::close() !!}   
                 </div>
                 <div class="box-body">
                    <table id="table"
@@ -58,6 +62,8 @@
          </div>
      </div>
 </section>	
+
+	@include('partials.confirm')
 @endsection
 
 @section('scripts')
@@ -91,16 +97,20 @@
         setTimeout(() => {
           $table.bootstrapTable('resetView');
         }, 200);
+        
         $table.on('check.bs.table uncheck.bs.table ' +
                   'check-all.bs.table uncheck-all.bs.table', () => {
           $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
           selections = getIdSelections();
+          console.log(selections);
         });
 
-        $remove.click(() => {
+/*         $remove.click(() => {
+            
           const ids = getIdSelections();
-          console.log(ids);
+          //console.log(ids);
           var url = route + ids;
+          
           $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -112,16 +122,21 @@
               data: {
                   "id": ids
               },
-              success: function (response) {
-            	  console.log(response);
+              success: function (data) {
+				alert(111111111);
+            	$("#modal-default").modal('show');
+            	//  console.log(response);
               }
-          });
+          }); 
           $table.bootstrapTable('remove', {
             field: 'id',
             values: ids
           });
+
+          
           $remove.prop('disabled', true);
-        });
+        }); */
+        
         $(window).resize(() => {
           $table.bootstrapTable('resetView', {
             height: getHeight()
@@ -158,6 +173,26 @@
     $(() => {
     	initTable();
     })
+    
+
+   //删除客户确认信息(模态窗口)
+   $('#confirmDelete').on('show.bs.modal', function (e) {
+	   
+        $message = $(e.relatedTarget).attr('data-message');
+        $(this).find('.modal-body').text($message);
+        $title = $(e.relatedTarget).attr('data-title');
+        $(this).find('.modal-title').text($title);
+    
+        // Pass form reference to modal for submission on yes/ok
+        var form = $(e.relatedTarget).closest('form');
+        $(this).find('.modal-footer #confirm').data('form', form);
+    });
+    
+    <!-- Form confirm (yes/ok) handler, submits form -->
+    $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
+        
+        $(this).data('form').submit();
+    });
     
 </script>
 	

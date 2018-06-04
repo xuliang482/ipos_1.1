@@ -35,7 +35,7 @@
 						<div class="form-group">
 							{!! Form::label('gender', trans('customer.gender'), array('class' => 'col-sm-2 control-label')) !!}
 							<div class="col-sm-8">
-							{!! Form::text('gender', Input::old('gender'), array('class' => 'form-control')) !!}
+							{{ Form::select('gender', ['男', '女'], $customer->gender, ['class' => 'form-control']) }}
 							</div>
 						</div>
 						<div class="form-group {{ $errors->has('phone_number') ? 'has-error' : '' }}">

@@ -51,10 +51,14 @@ return [
     'message_successful_create'=> '您已成功添加客户',
     'message_successful_delete'=> '您已成功删除客户',
     'message_successful_update'=> '您已成功更新客户',
-
+    'message_confirm_delete'=> '您確定要刪除所选择的用户信息吗？',
+    
+    
     'validation_name_required' => '客户名称是必须输入项',
     'validation_phone_number_required' => '电话号码是必须输入项',
     'validation_email_required' => '邮箱地址是必须输入项',
     'validation_email_address' => '请输入一个有效的电子邮件地址',
+    
+    
     
 ];
