@@ -1,25 +1,32 @@
 @extends('layouts.master')
 
 @section('content')
+<section class="content-header">
+    <h1>{{trans('item.title')}}
+        <small>{{trans('item.list')}}</small>
+    </h1>
+</section>
 <section class="content">
+   <!-- message common by toastr  -->
+   @include('partials.toastr')
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
             	<div class="box-header with-border">
             		<div class="pull-right">
                         <div class="btn-group pull-right" style="margin-right: 10px">
-                            <a href="" class="btn btn-sm btn-primary btn-flat"><i class="glyphicon glyphicon-import"></i>&nbsp;&nbsp;{{trans('customer.import')}}</a>
+                            <a href="" class="btn btn-primary btn-flat"><i class="glyphicon glyphicon-import"></i>&nbsp;&nbsp;{{trans('customer.import')}}</a>
                          </div>
             	
                 		<div class="btn-group pull-right" style="margin-right: 5px">
-                            <a href="{{ route('items.create') }}" class="btn btn-sm btn-success btn-flat">
+                            <a href="{{ route('items.create') }}" class="btn btn-success btn-flat">
                                 <i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;{{trans('item.create')}}
                             </a>
                         </div>
                     </div>
             	</div>
             	<div id="toolbar">
-                  <button id="remove" class="btn btn-default btn-flat" disabled>
+                  <button id="remove" class="btn btn-danger btn-flat" disabled data-toggle="modal" data-target="#confirmDelete" data-title="{{trans('item.title')}}" data-message="{{trans('item.message_confirm_delete')}}">
                     <i class="fa fa-trash"></i> {{trans('item.delete')}}
                   </button>
                   <button id="generate_barcodes" class="btn btn-default btn-flat" disabled>
@@ -29,8 +36,6 @@
             	<div class="box-body">
     		 		 <table id="table"
                           data-toolbar="#toolbar"
-                          data-show-refresh="true"
-                          data-show-columns="true"
                           data-pagination="true"
                           data-search="true"
                           data-click-to-select="true"
@@ -57,7 +62,8 @@
          </div>
      </div>
 </section>
- 	
+ 	<!-- when record is deleted,confirm model is popuped  -->
+	@include('partials.confirm')
 @endsection
 
 @section('scripts')
@@ -77,7 +83,7 @@
 	var json = {!! $items !!};
 	var route = "items/";
 
-	//json data to init
+ 	//json data to init
 	$(function () {
 		$table.bootstrapTable({
 	        data: json
@@ -105,33 +111,6 @@
           selections = getIdSelections();
         });
 
-        $remove.click(() => {
-          const ids = getIdSelections();
-          console.log(ids);
-          var url = route + ids;
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
-          $.ajax({
-              url: url,
-              type: 'DELETE',
-              data: {
-                  "id": ids
-              },
-              success: function (response) {
-            	  console.log(response);
-              }
-          });
-          $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-          });
-          $remove.prop('disabled', true);
-        });
-
-
         //生成商品标签
         $generate_barcodes.click(() => {
 
@@ -156,7 +135,7 @@
 
     	var url = '{!! asset('/images/items/') !!}/' + value;
         return [
-        	'<a class="rollover" href="' + url +  '">',
+        	'<a class="preview" href="' + url +  '">',
         	 '<img src="' + url + '">',
             '</a>'
        	 
@@ -199,16 +178,82 @@
     $(() => {
     	initTable();
     })
+     
     
     
-    $(document).ready(function()
-    {
-        table_support.init({
-            
-        });
+   	//删除商品确认信息(模态窗口)
+    $('#confirmDelete').on('show.bs.modal', function (e) {
+	   
+        $message = $(e.relatedTarget).attr('data-message');
+        $(this).find('.modal-body').text($message);
+        $title = $(e.relatedTarget).attr('data-title');
+        $(this).find('.modal-title').text($title);
+
     });
     
+    <!-- Form confirm (yes/ok) handler, submits form -->
+    $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
+
+        const ids = getIdSelections();
+        var url = route + ids;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+              "id": ids
+          },
+          complete: function () {
+        	  $('#confirmDelete').modal('hide');
+        	  window.location.reload();
+            }
+        }); 
+        
+    });
     
+
+
+    this.imagePreview = function(){	
+    	/* CONFIG */
+    		
+    		xOffset = 100;
+    		yOffset = 300;
+    		
+    		// these 2 variable determine popup's distance from the cursor
+    		// you might want to adjust to get the right result
+    		
+    	/* END CONFIG */
+    	$("a.preview").hover(function(e){
+    		this.t = this.title;
+    		this.title = "";	
+    		var c = (this.t != "") ? "<br/>" + this.t : "";
+    		$("body").append("<p id='preview'><img src='"+ this.href +"' alt='Image preview' />"+ c +"</p>");								 
+    		$("#preview")
+    			.css("top",(e.pageY - xOffset) + "px")
+    			.css("left",(e.pageX + yOffset) + "px")
+    			.fadeIn("fast");						
+        },
+    	function(){
+    		this.title = this.t;	
+    		$("#preview").remove();
+        });	
+    	$("a.preview").mousemove(function(e){
+    		$("#preview")
+    			.css("top",(e.pageY - xOffset) + "px")
+    			.css("left",(e.pageX + yOffset) + "px");
+    	});			
+    };
+
+
+    // starting the script on page load
+    $(document).ready(function(){
+    	imagePreview();
+    });
     
     
 	</script>
