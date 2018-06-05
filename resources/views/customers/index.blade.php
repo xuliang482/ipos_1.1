@@ -7,6 +7,7 @@
     </h1>
 </section>
 <section class="content">
+   <!-- message common by toastr  -->
    @include('partials.toastr')
     <div class="row">
         <div class="col-xs-12">
@@ -15,29 +16,23 @@
             
                     <div class="pull-right">
                         <div class="btn-group" style="margin-right: 5px">
-                            <a href="{{ route('customers.create') }}" class="btn btn-sm btn-success btn-flat">
+                            <a href="{{ route('customers.create') }}" class="btn btn-success btn-flat">
                                 <i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;{{trans('customer.create')}}
                             </a>
                         </div>
                         <div class="btn-group">
-                            <a href="" class="btn btn-sm btn-primary btn-flat"><i class="glyphicon glyphicon-import"></i>&nbsp;&nbsp;{{trans('customer.import')}}</a>
+                            <a href="" class="btn btn-primary btn-flat"><i class="glyphicon glyphicon-import"></i>&nbsp;&nbsp;{{trans('customer.import')}}</a>
                          </div>
                     </div>
                 </div>
-               
                 <div id="toolbar">
-                 {!! Form::open(array('url' => 'customers/', 'class' => 'pull-right')) !!}
-                    {!! Form::hidden('_method', 'DELETE') !!}
                   	<button id="remove" class="btn btn-danger btn-flat" disabled data-toggle="modal" data-target="#confirmDelete" data-title="{{trans('customer.title')}}" data-message="{{trans('customer.message_confirm_delete')}}">
                     	<i class="fa fa-trash"></i> {{trans('customer.delete')}}
                  	 </button>
-                {!! Form::close() !!}   
                 </div>
                 <div class="box-body">
                    <table id="table"
                           data-toolbar="#toolbar"
-                          data-show-refresh="true"
-                          data-show-columns="true"
                           data-pagination="true"
                           data-search="true"
                           data-click-to-select="true"
@@ -62,12 +57,12 @@
          </div>
      </div>
 </section>	
-
+	<!-- when record is deleted,confirm model is popuped  -->
 	@include('partials.confirm')
+	
 @endsection
 
 @section('scripts')
-
 <script>
    
     $("div.alert").not('.alert-import').delay(4000).slideUp(200, function() {
@@ -105,38 +100,6 @@
           console.log(selections);
         });
 
-/*         $remove.click(() => {
-            
-          const ids = getIdSelections();
-          //console.log(ids);
-          var url = route + ids;
-          
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
-          $.ajax({
-              url: url,
-              type: 'DELETE',
-              data: {
-                  "id": ids
-              },
-              success: function (data) {
-				alert(111111111);
-            	$("#modal-default").modal('show');
-            	//  console.log(response);
-              }
-          }); 
-          $table.bootstrapTable('remove', {
-            field: 'id',
-            values: ids
-          });
-
-          
-          $remove.prop('disabled', true);
-        }); */
-        
         $(window).resize(() => {
           $table.bootstrapTable('resetView', {
             height: getHeight()
@@ -144,7 +107,7 @@
         });
       }
 	
-
+	//to get the checkbox id
     function getIdSelections() {
         return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
       }
@@ -175,23 +138,39 @@
     })
     
 
-   //删除客户确认信息(模态窗口)
-   $('#confirmDelete').on('show.bs.modal', function (e) {
+    //删除客户确认信息(模态窗口)
+    $('#confirmDelete').on('show.bs.modal', function (e) {
 	   
         $message = $(e.relatedTarget).attr('data-message');
         $(this).find('.modal-body').text($message);
         $title = $(e.relatedTarget).attr('data-title');
         $(this).find('.modal-title').text($title);
-    
-        // Pass form reference to modal for submission on yes/ok
-        var form = $(e.relatedTarget).closest('form');
-        $(this).find('.modal-footer #confirm').data('form', form);
+
     });
     
     <!-- Form confirm (yes/ok) handler, submits form -->
     $('#confirmDelete').find('.modal-footer #confirm').on('click', function(){
+
+        const ids = getIdSelections();
+        var url = route + ids;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+          url: url,
+          type: 'DELETE',
+          data: {
+              "id": ids
+          },
+          complete: function () {
+        	  $('#confirmDelete').modal('hide');
+        	  window.location.reload();
+            }
+        }); 
         
-        $(this).data('form').submit();
     });
     
 </script>
