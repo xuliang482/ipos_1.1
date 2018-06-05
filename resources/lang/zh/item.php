@@ -32,7 +32,8 @@ return [
     'export'=> '导出',
     'edit'	=> '编辑',
     'delete'=> '删除',
-
+    'generate_barcodes'=> '生成条码',
+    
 
     'title' => '商品信息',
     'back'=> '返回',
@@ -42,12 +43,13 @@ return [
     'message_successful_create'=> '您已成功添加商品',
     'message_successful_delete'=> '您已成功删除商品',
     'message_successful_edit'=> '您已成功更新商品',
+    'message_confirm_delete'=> '您確定要刪除所选择的商品信息吗？',
 
     'validation_upc_ean_isbn_required' => '商品条码是必须输入项',
     'validation_name_required' => '商品名称是必须输入项',
     'validation_category_required' => '种类是必须输入项',
     'validation_cost_price_required' => '成本价格是必须输入项',
-    'validation_selling_price_required' => '销售是必须输入项',
+    'validation_selling_price_required' => '销售价格是必须输入项',
     'validation_email_address' => '请输入一个有效的电子邮件地址',
     
 ];
