@@ -24,7 +24,7 @@ return [
     'description' => '说明',
 
 
-    'operation' => '操作',
+    'operate' => '操作',
     'reset'=> '重置',
     'submit'=> '提交',
     'create'=> '新商品',

@@ -41,21 +41,6 @@
                           data-click-to-select="true"
                           data-sort-name="id"
                           data-sort-order="desc">
-                        <thead>
-                            <tr>
-                             	<th data-field="state"  data-checkbox="true" width="10px;"></th>
-                                <th data-field="id" 	data-sortable="true">{{trans('item.id')}}</th>
-                                <th data-field="avatar" 	data-sortable="true" data-formatter="avatarFormatter">{{trans('item.avatar')}}</th>
-                                <th data-field="upc_ean_isbn" 	data-sortable="true">{{trans('item.upc_ean_isbn')}}</th>
-                                <th data-field="name" 	data-sortable="true">{{trans('item.name')}}</th>
-                                <th data-field="category" 	data-sortable="true">{{trans('item.category')}}</th>
-                                <th data-field="cost_price" 	data-sortable="true">{{trans('item.cost_price')}}</th>
-                                <th data-field="selling_price" 	data-sortable="true">{{trans('item.selling_price')}}</th>
-                                <th data-field="quantity" 	data-sortable="true">{{trans('item.quantity')}}</th>
-                                <th data-field="description" 	data-sortable="true">{{trans('item.description')}}</th>
-                                <th data-field="operate"  data-formatter="operateFormatter" data-events="operateEvents">{{trans('item.operation')}}</th>
-                            </tr>
-                        </thead>
                     </table>
             	</div>
            	</div>
@@ -86,7 +71,8 @@
  	//json data to init
 	$(function () {
 		$table.bootstrapTable({
-	        data: json
+	        data: json,
+	        columns:{!! TabularHelper::get_items_manage_table_headers() !!}
 	    });
 
 		

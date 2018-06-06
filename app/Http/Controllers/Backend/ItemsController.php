@@ -11,6 +11,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemRequest;
 use App\Models\Item;
+use App\Helpers\TabularHelper;
 
 class ItemsController extends Controller
 {
@@ -26,8 +27,14 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        $items = Item::paginate(15);
-        return view('items.index')->with('item', $items);
+        $items = Item::all();
+        
+        $data_rows = array();
+        foreach($items as $item)
+        {
+            $data_rows[] = TabularHelper::get_item_data_row($item);
+        }
+        return view('items.index')->with('items', json_encode($data_rows));
     }
     
     /**
@@ -76,9 +83,9 @@ class ItemsController extends Controller
                 $request->file('avatar')->getClientOriginalExtension();
                 
                 $request->file('avatar')->move(
-                    base_path() . '/public/images/items/', $avatarName
+                    base_path() . '/public/uploads/items/', $avatarName
                     );
-                $img = Image::make(base_path() . '/public/images/items/' . $avatarName);
+                $img = Image::make(base_path() . '/public/uploads/items/' . $avatarName);
                 $img->resize(100, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
@@ -130,11 +137,22 @@ class ItemsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  array|int  $ids
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($ids)
     {
-        //
+        Item::destroy(explode(",", $ids));
+        $toastr = array(
+            'type' => 'success',
+            'message' => Lang::get('item.message_successful_delete'),
+            'options' => array(
+                'positionClass'=> 'toast-top-right',
+                'progressBar'=> true,
+            )
+        );
+        
+        Session::flash('toastr',  $toastr);
+        return Redirect::to('items');
     }
 }

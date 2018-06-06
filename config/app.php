@@ -167,9 +167,10 @@ return [
         /*
          * Package Service Providers...
          */
-         Collective\Html\HtmlServiceProvider::class,
-         Intervention\Image\ImageServiceProvider::class,
-
+        Collective\Html\HtmlServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
+      
         /*
          * Application Service Providers...
          */
@@ -178,6 +179,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\HelperServiceProvider::class,
 
 
 
@@ -233,6 +235,10 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Input' => Illuminate\Support\Facades\Input::class,
+        'DNS1D'     => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D'     => Milon\Barcode\Facades\DNS2DFacade::class,
+        
+        'TabularHelper' => App\Helpers\TabularHelper::class,
     ],
 
 ];
