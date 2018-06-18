@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Http\Controllers\Controller;
@@ -29,12 +31,33 @@ class ItemsController extends Controller
     {
         $items = Item::all();
         
+
+        $controller_name =  Route::currentRouteName();
+        
+    
         $data_rows = array();
         foreach($items as $item)
         {
             $data_rows[] = TabularHelper::get_item_data_row($item);
         }
-        return view('items.index')->with('items', json_encode($data_rows));
+        //return view('items.index')->with('items', json_encode($data_rows));
+        return view('items.index');
+    }
+    
+    /**
+     * Display a listing of the resource.
+     * @param
+     * @return \Illuminate\Http\Response
+     */
+    public function search()
+    {
+        $items = Item::all();
+        $data_rows = array();
+        foreach($items as $item)
+        {
+            $data_rows[] = TabularHelper::get_item_data_row($item);
+        }
+        return json_encode($data_rows);
     }
     
     /**
