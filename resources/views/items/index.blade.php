@@ -51,13 +51,15 @@ $(document).ready(function()
 {
 	console.log('table_suport');
     table_support.init({
-    
+    	
     	resource: 'items',
         headers: {!! TabularHelper::get_items_manage_table_headers() !!},
         pageSize:10
         //uniqueId: 'customers.id'
             
     });
+
+    imagePreview();
 });
  
     $("div.alert").not('.alert-important').delay(4000).slideUp(200, function() {
@@ -98,13 +100,6 @@ $(document).ready(function()
     			.css("left",(e.pageX + yOffset) + "px");
     	});			
     };
-
-
-    // starting the script on page load
-    $(document).ready(function(){
-    	imagePreview();
-    });
-    
     
 	</script>
 	

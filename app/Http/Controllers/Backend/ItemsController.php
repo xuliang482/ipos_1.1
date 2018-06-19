@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -40,7 +41,7 @@ class ItemsController extends Controller
         {
             $data_rows[] = TabularHelper::get_item_data_row($item);
         }
-        //return view('items.index')->with('items', json_encode($data_rows));
+       // return view('items.index')->with('items', json_encode($data_rows));
         return view('items.index');
     }
     
@@ -51,13 +52,36 @@ class ItemsController extends Controller
      */
     public function search()
     {
-        $items = Item::all();
+        
+        //检索条件
+        $search = Input::get('search');
+        $limit = Input::get('limit');
+        $offset = Input::get('offset');
+        $sort = Input::get('sort');
+        $order = Input::get('order');
+        
+        //过滤条件
+        $filters = array(
+            'start_date' => Input::get('start_date'),
+            'end_date' => Input::get('end_date'),
+            'search_custom' => FALSE
+        );
+        
+        //根据条件检索
+        $items = Item::find(1);
+        $items = $items->search($search, $filters, $limit, $offset, $sort, $order);;
+        //根据条件检索总件数
+        $total_rows = Item::where('active', '1')->get()->count();
+        
+        //对返回数据进行加工
         $data_rows = array();
         foreach($items as $item)
         {
             $data_rows[] = TabularHelper::get_item_data_row($item);
         }
-        return json_encode($data_rows);
+        //返回JSON数据
+        return json_encode(array('total' => $total_rows, 'rows' => $data_rows));;
+        
     }
     
     /**

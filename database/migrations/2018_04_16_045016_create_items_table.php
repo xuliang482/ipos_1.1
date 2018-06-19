@@ -23,6 +23,7 @@ class CreateItemsTable extends Migration
             $table->integer('quantity');
             $table->text('description');
             $table->string('avatar', 255)->default('no-foto.png');
+            $table->integer('active')->default(1);
             $table->timestamps();
         });
     }

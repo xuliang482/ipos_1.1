@@ -9,6 +9,8 @@
   <meta name="csrf-token" content="{{csrf_token()}}">
  
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
+  <link rel="stylesheet" href="{{asset('css/imagePreview.css')}}">
+  
   <link rel="stylesheet" href="{{asset('vendor/laravel-admin/AdminLTE/dist/css/AdminLTE.min.css')}}">
   <link rel="stylesheet" href="{{asset('vendor/laravel-admin/AdminLTE/plugins/iCheck/minimal/blue.css')}}">
   <link rel="stylesheet" href="{{asset('vendor/laravel-admin/toastr/build/toastr.min.css')}}">
@@ -17,7 +19,7 @@
   <script src="{{ asset ('vendor/laravel-admin/AdminLTE/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
   <script src="{{ asset ('vendor/laravel-admin/AdminLTE/bootstrap/js/bootstrap.min.js') }}"></script>
   <script src="{{ asset ('vendor/laravel-admin/toastr/build/toastr.min.js') }}"></script>
-  
+
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -61,6 +63,7 @@ desired effect
 
 </div>
 <script src="{{asset('js/app.js')}}"></script>
+<script src="{{asset('js/manage_table.js')}}"></script>
 @yield('scripts')
 </body>
 </html>

@@ -48,9 +48,6 @@
 	
 	var do_delete = function (url, ids) {
 		
-		
-		
-		
 	};
 
 	var do_restore = function (url, ids) {
